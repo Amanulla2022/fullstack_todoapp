@@ -3,10 +3,11 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { setLoading } from "../redux/authSlice";
+import { setIsLoggedIn, setLoading } from "../redux/authSlice";
 import { BASE_URL } from "../utils/baseUrl";
 import { ClipLoader } from "react-spinners";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -25,6 +26,7 @@ const SignUp = () => {
   };
 
   const submitForm = async (e) => {
+    e.preventDefault();
     if (!input.name || !input.userName || !input.emailId || !input.password) {
       console.log("Please fill all the details!");
     }
@@ -44,13 +46,14 @@ const SignUp = () => {
         withCredentials: true,
       });
       if (response.status === 200) {
+        dispatch(setIsLoggedIn(true));
         navigate("/login");
-        console.log("Registeration successful!");
+        toast.success("Registration successful!");
       } else {
-        console.log("Registration failed!");
+        toast.error("Registration successful!");
       }
     } catch (error) {
-      console.log(`Error occured ${error}`);
+      toast.error("An error occurred during registration!");
     } finally {
       dispatch(setLoading(false));
     }

@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "./../utils/baseUrl";
 import { IoIosLogOut } from "react-icons/io";
 import { setIsLoggedIn } from "../redux/authSlice";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { isLoggedIn } = useSelector((store) => store.auth);
@@ -20,12 +21,12 @@ const Navbar = () => {
       if (response.status === 200) {
         dispatch(setIsLoggedIn(false));
         navigate("/");
-        console.log("Logout successfully!");
+        toast.success(response.data.message);
       } else {
-        console.log("Logout failed!");
+        toast.error("Logout failed!");
       }
     } catch (error) {
-      console.log(`Error ${error}`);
+      toast.error("An error occurred during logout!");
     }
   };
   return (

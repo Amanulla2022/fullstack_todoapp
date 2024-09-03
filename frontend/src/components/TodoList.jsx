@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/baseUrl";
+import TodoItem from "./TodoItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../redux/authSlice";
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [editTask, setEditTask] = useState(null);
+
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
 
   const fetchTodos = async () => {
     try {
@@ -17,26 +26,73 @@ const TodoList = () => {
     }
   };
 
+  const handleEdit = (task) => {
+    setEditTask(task);
+  };
+
+  const handleUpdate = async (taskId) => {
+    try {
+      await axios.put(
+        `${BASE_URL}/todo/${taskId}`,
+        {
+          title: editTask.title,
+          descriptions: editTask.descriptions,
+          completed: editTask.completed,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      fetchTodos();
+      setEditTask(null);
+      toast.success("Task updated successfully!");
+    } catch (error) {
+      toast.error("An error occurred during updating task!");
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handleDelete = async (taskId) => {
+    try {
+      await axios.delete(`${BASE_URL}/todo/${taskId}`, {
+        withCredentials: true,
+      });
+      setTodos(todos.filter((task) => task._id !== taskId));
+      toast.success("Task deleted successfully!");
+    } catch (error) {
+      toast.error("An error occurred during updating task!");
+    }
+  };
+
   useEffect(() => {
     fetchTodos();
   }, []);
+
   return (
-    <div className="w-full max-w-screen-xl mx-auto">
-      {todos.length > 0 ? (
-        todos.map((todo) => (
-          <div
-            key={todo._id}
-            className="flex justify-evenly items-center bg-gray-100 p-4 mb-2 rounded-xl shadow-xl"
-          >
-            <h2 className="text-xl font-bold">{todo.title}</h2>
-            <p>{todo.descriptions}</p>
-            <p>{todo.completed ? "Completed" : "Not Completed"}</p>
-          </div>
-        ))
+    <>
+      {loading ? (
+        <ClipLoader color="#3498db" className="h-16 w-16" />
       ) : (
-        <p>No task added add new tasks!</p>
-      )}
-    </div>
+        <div className="w-full max-w-screen-xl mx-auto">
+          {todos.length > 0 ? (
+            todos.map((todo) => (
+              <TodoItem
+                key={todo._id}
+                todo={todo}
+                editTask={editTask}
+                handleEdit={handleEdit}
+                handleUpdate={handleUpdate}
+                handleDelete={handleDelete}
+                setEditTask={setEditTask}
+              />
+            ))
+          ) : (
+            <p className="text-center">No task added add new tasks!</p>
+          )}
+        </div>
+      )}{" "}
+    </>
   );
 };
 

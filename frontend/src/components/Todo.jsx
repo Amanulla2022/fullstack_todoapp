@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "./../utils/baseUrl";
+import { toast } from "react-toastify";
 
 const Todo = ({ onTaskAdded }) => {
   const [input, setInput] = useState({
@@ -15,8 +16,6 @@ const Todo = ({ onTaskAdded }) => {
       ...input,
       [name]: type === "checkbox" ? checked : value,
     });
-
-    console.log(`Updated ${name}: ${type === "checkbox" ? checked : value}`);
   };
 
   const submitForm = async (e) => {
@@ -27,17 +26,16 @@ const Todo = ({ onTaskAdded }) => {
     }
 
     try {
-      console.log(input);
-      const response = await axios.post(`${BASE_URL}/todo/task`, input, {
+      await axios.post(`${BASE_URL}/todo/task`, input, {
         headers: {
           "Content-type": "application/json",
         },
         withCredentials: true,
       });
-      console.log(response);
+      toast.success("Created a task!");
       onTaskAdded();
     } catch (error) {
-      console.log(`Error occured ${error}`);
+      toast.error("An error occurred during creating task!");
     }
   };
 

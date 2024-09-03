@@ -7,6 +7,7 @@ import { BASE_URL } from "../utils/baseUrl";
 import { ClipLoader } from "react-spinners";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -39,12 +40,12 @@ const Login = () => {
       if (response.status === 200) {
         dispatch(setIsLoggedIn(true));
         navigate("/home");
-        console.log("Login successfully!");
+        toast.success(response.data.message);
       } else {
-        console.log("Login failed!");
+        toast.error("Login failed!");
       }
     } catch (error) {
-      console.log(`Error occured ${error}`);
+      toast.error("An error occurred during login!");
     } finally {
       dispatch(setLoading(false));
     }
