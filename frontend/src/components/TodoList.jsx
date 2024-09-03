@@ -22,7 +22,10 @@ const TodoList = () => {
       console.log(response.data.todos);
       setTodos(response.data.todos);
     } catch (error) {
-      console.log(`Error ${error}`);
+      console.error(
+        "Error fetching todos:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
