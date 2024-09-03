@@ -1,7 +1,12 @@
 import "./App.css";
+import Layout from "./Layout";
 
 function App() {
-  return <>Amanulla!!!</>;
+  return (
+    <>
+      <Layout />
+    </>
+  );
 }
 
 export default App;

@@ -16,6 +16,7 @@ const createToDoTasks = async (req, res) => {
     const newToDo = await ToDo.create({
       title,
       descriptions,
+      completed: req.body.completed,
       user: req.user.userId,
     });
 

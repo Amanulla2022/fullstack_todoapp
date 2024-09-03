@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* signup and login */
+
+.form-div {
+  @apply flex items-center justify-center mx-auto;
+}
+
+.form-details {
+  @apply w-1/2 border-2 border-gray-300 rounded-xl p-4 my-10;
+}
+
+.form-heading {
+  @apply font-bold text-2xl mb-5 underline;
+}
+
+.form-sub-div {
+  @apply flex flex-col items-start my-2;
+}
+
+.form-input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.form-button {
+  @apply mt-4 w-1/4 rounded-xl p-2 bg-black text-white;
+}
