@@ -1,1 +1,2 @@
-export const BASE_URL = "http://localhost:5000/api/moretask";
+export const BASE_URL =
+  "https://fullstack-todoapp-qfjv.onrender.com/api/moretask";

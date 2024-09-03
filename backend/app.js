@@ -14,7 +14,10 @@ dotenv.config();
 const PORT = process.env.PORT_URL;
 
 const corsOptions = {
-  origin: "http://localhost:3000", // allow requests from this origin
+  origin: [
+    "http://localhost:3000",
+    "https://fullstack-todoapp-qfjv.onrender.com",
+  ], // allow requests from this origin
   credentials: true, // allowing cookies credentials to be sent with requests
 };
 
