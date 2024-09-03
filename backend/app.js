@@ -17,6 +17,7 @@ const corsOptions = {
   origin: [
     "http://localhost:3000",
     "https://fullstack-todoapp-qfjv.onrender.com",
+    "https://fullstack-todoapp-omega.vercel.app",
   ], // allow requests from this origin
   credentials: true, // allowing cookies credentials to be sent with requests
 };
