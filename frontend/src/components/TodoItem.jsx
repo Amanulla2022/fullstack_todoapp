@@ -11,7 +11,7 @@ const TodoItem = ({
   setEditTask,
 }) => {
   return (
-    <div className="flex justify-evenly items-center bg-gray-100 p-4 mb-2 rounded-xl shadow-xl">
+    <div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 mb-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
       {editTask && editTask._id === todo._id ? (
         <>
           <input
@@ -20,7 +20,7 @@ const TodoItem = ({
             onChange={(e) =>
               setEditTask({ ...editTask, title: e.target.value })
             }
-            className="border rounded p-2"
+            className="edit-input"
           />
           <input
             type="text"
@@ -28,55 +28,61 @@ const TodoItem = ({
             onChange={(e) =>
               setEditTask({ ...editTask, descriptions: e.target.value })
             }
-            className="border rounded p-2"
+            className="edit-input"
           />
-          <label>
-            Completed:
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={editTask.completed}
               onChange={(e) =>
                 setEditTask({ ...editTask, completed: e.target.checked })
               }
-              className="ml-2"
+              className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
             />
+            <span>Completed</span>
           </label>
-          <button
-            onClick={() => handleUpdate(todo._id)}
-            className="bg-blue-500 text-white p-2 rounded"
-          >
-            <FaSave />
-          </button>
-          <button
-            onClick={() => setEditTask(null)}
-            className="bg-gray-500 text-white p-2 rounded ml-2"
-          >
-            <MdCancel />
-          </button>
+          <div className="flex gap-2 mt-2 md:mt-0">
+            <button
+              onClick={() => handleUpdate(todo._id)}
+              className="bg-blue-600 hover:bg-blue-700 task-btn"
+            >
+              <FaSave />
+            </button>
+            <button
+              onClick={() => setEditTask(null)}
+              className="bg-gray-600 hover:bg-gray-700 task-btn"
+            >
+              <MdCancel />
+            </button>
+          </div>
         </>
       ) : (
         <>
-          <h2 className="text-xl font-bold">{todo.title}</h2>
-          <p>{todo.descriptions}</p>
+          <div className="w-full md:w-1/4">
+            <h2 className="text-xl font-bold mb-2">{todo.title}</h2>
+            <p className="text-sm text-gray-600">{todo.descriptions}</p>
+          </div>
           <p
             className={`${
-              todo.completed ? "line-through text-red-500" : "text-green-500"
-            }`}
+              todo.completed ? "line-through text-green-500" : "text-red-500"
+            } font-medium`}
           >
             {todo.completed ? "Completed" : "Not Completed"}
           </p>
-          <button
-            onClick={() => handleEdit(todo)}
-            className="bg-green-500 text-white p-2 rounded"
-          >
-            <MdEdit />
-          </button>
-          <button
-            onClick={() => handleDelete(todo._id)}
-            className="bg-red-500 text-white p-2 rounded ml-2"
-          >
-            <MdDelete />
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleEdit(todo)}
+              className="bg-green-500 hover:bg-green-600 task-btn"
+            >
+              <MdEdit />
+            </button>
+            <button
+              onClick={() => handleDelete(todo._id)}
+              className="bg-red-500 hover:bg-red-600 task-btn"
+            >
+              <MdDelete />
+            </button>
+          </div>
         </>
       )}
     </div>

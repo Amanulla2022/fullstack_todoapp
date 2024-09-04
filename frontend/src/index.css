@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 /* signup and login */
-
 .form-div {
   @apply flex items-center justify-center mx-auto;
 }
 
 .form-details {
-  @apply w-1/2 border-2 border-gray-300 rounded-xl p-4 my-10;
+  @apply md:w-1/2 w-full mx-2 border-2 border-gray-300 rounded-xl p-4 my-10;
 }
 
 .form-heading {
@@ -26,4 +25,49 @@
 
 .form-button {
   @apply mt-4 w-1/4 rounded-xl p-2 bg-black text-white;
+}
+
+/* footer */
+.footer-span {
+  @apply text-blue-600;
+}
+
+.footer-link {
+  @apply text-black hover:text-white  p-2 rounded-full transition duration-300;
+}
+
+.footer-icons {
+  @apply text-5xl rounded-full p-2;
+}
+
+/* navabr */
+.main-btn {
+  @apply flex gap-2 items-center py-2 px-4 rounded-full transition duration-300;
+}
+
+/* main / todo */
+.todo-input {
+  @apply py-2 px-4 text-xl border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* main/ todoitem */
+.edit-input {
+  @apply w-full md:w-1/4 border rounded p-2 mb-2 md:mb-0;
+}
+
+.task-btn {
+  @apply text-white p-2 rounded transition duration-300;
+}
+
+/* main / todolist */
+.common-btn {
+  @apply px-1 md:px-2 rounded-lg;
+}
+
+.selected-btn {
+  @apply bg-violet-600 text-white;
+}
+
+.notselected-btn {
+  @apply bg-gray-200 text-gray-700;
 }

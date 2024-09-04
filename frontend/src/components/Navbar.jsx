@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "./../utils/baseUrl";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
 import { setIsLoggedIn } from "../redux/authSlice";
 import { toast } from "react-toastify";
+import { MdAccountCircle } from "react-icons/md";
 
 const Navbar = () => {
   const { isLoggedIn } = useSelector((store) => store.auth);
@@ -20,7 +21,7 @@ const Navbar = () => {
 
       if (response.status === 200) {
         dispatch(setIsLoggedIn(false));
-        navigate("/");
+        navigate("/login");
         toast.success(response.data.message);
       } else {
         toast.error("Logout failed!");
@@ -32,14 +33,14 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-around mt-2 border-b border-b-gray-300 py-4">
       <h1 className="text-3xl font-bold">
-        To<span className="text-blue-600">Do</span>
+        To<span className="footer-span">Do</span>
       </h1>
 
       <div className="flex gap-4">
         {isLoggedIn ? (
           <button
             onClick={handleLogout}
-            className="flex gap-2 justify-center items-center py-2 px-4 text-white bg-red-600 rounded-xl hover:underline"
+            className="text-white main-btn bg-red-600 hover:bg-red-700"
           >
             Logout
             <IoIosLogOut className="text-2xl font-bold" />
@@ -47,13 +48,15 @@ const Navbar = () => {
         ) : (
           <>
             <Link to="/login">
-              <button className="py-2 px-4 bg-white border-2 border-gray-200 rounded-xl hover:underline">
+              <button className="main-btn border-2 text-black border-gray-300 hover:bg-gray-100 ">
                 Login
+                <IoIosLogIn className="text-2xl font-bold" />
               </button>
             </Link>
             <Link to="/">
-              <button className="py-2 px-4 bg-blue-600 text-white rounded-xl hover:underline">
+              <button className="main-btn text-white bg-blue-600 hover:bg-blue-700">
                 SignUp
+                <MdAccountCircle className="text-2xl font-bold" />
               </button>
             </Link>
           </>

@@ -20,8 +20,18 @@ const Todo = ({ onTaskAdded }) => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    if (!input.title || !input.descriptions) {
-      console.log("Fill all the details!");
+    if (!input.title && !input.descriptions) {
+      toast.error("Fill all the details!");
+      return;
+    }
+
+    if (!input.title) {
+      toast.error("Please enter title for task!");
+      return;
+    }
+
+    if (!input.descriptions) {
+      toast.error("Please enter description for task!");
       return;
     }
 
@@ -41,41 +51,32 @@ const Todo = ({ onTaskAdded }) => {
 
   return (
     <div className="flex flex-col justify-center items-center mt-4">
-      <h1 className="text-4xl font-bold underline decoration-blue-600">
+      <h1 className="text-4xl font-bold mb-2 uppercase shadow-lg">
         ToDo Tasks!
       </h1>
       <form
         onSubmit={submitForm}
-        className="form-details max-w-screen-2xl mb-4"
+        className="flex flex-row gap-4 items-center mb-4"
       >
-        <div className="flex gap-4 items-center">
-          <input
-            type="text"
-            name="title"
-            value={input.title}
-            onChange={changeEventHandler}
-            placeholder="Title"
-            className="w-1/4 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            name="descriptions"
-            value={input.descriptions}
-            onChange={changeEventHandler}
-            placeholder="Descriptions"
-            className="w-2/4 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="checkbox"
-            name="completed"
-            checked={input.completed}
-            onChange={changeEventHandler}
-            className="mt-2"
-          />
-          <button className="bg-black text-white px-4 py-2 rounded-xl">
-            Add Task
-          </button>
-        </div>
+        <input
+          type="text"
+          name="title"
+          value={input.title}
+          onChange={changeEventHandler}
+          placeholder="Title"
+          className="w-1/4 todo-input"
+        />
+        <input
+          type="text"
+          name="descriptions"
+          value={input.descriptions}
+          onChange={changeEventHandler}
+          placeholder="Descriptions"
+          className="md:w-2/3 w-1/2 todo-input"
+        />
+        <button className="w-1/5 md:1/4 bg-black text-white items-center py-2 px-2 rounded-lg">
+          Add
+        </button>
       </form>
     </div>
   );

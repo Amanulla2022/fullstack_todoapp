@@ -1,30 +1,37 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import { useSelector } from "react-redux";
 
-const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <SignUp />,
-  },
+const ProtectedRoute = ({ element }) => {
+  const { isLoggedIn } = useSelector((store) => store.auth);
 
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-]);
+  return isLoggedIn ? element : <Navigate to="/login" />;
+};
+
 const Layout = () => {
-  return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <SignUp />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/home",
+      element: <ProtectedRoute element={<Home />} />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 };
 
 export default Layout;

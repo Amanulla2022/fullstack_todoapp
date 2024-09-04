@@ -3,11 +3,12 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { setIsLoggedIn, setLoading } from "../redux/authSlice";
+import { setLoading } from "../redux/authSlice";
 import { BASE_URL } from "../utils/baseUrl";
 import { ClipLoader } from "react-spinners";
 import Footer from "../components/Footer";
 import { toast } from "react-toastify";
+import { TbEye, TbEyeClosed } from "react-icons/tb";
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -16,6 +17,8 @@ const SignUp = () => {
     emailId: "",
     password: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
@@ -27,8 +30,29 @@ const SignUp = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    if (!input.name || !input.userName || !input.emailId || !input.password) {
-      console.log("Please fill all the details!");
+    if (!input.name && !input.userName && !input.emailId && !input.password) {
+      toast.error("Please fill all the details!");
+      return;
+    }
+
+    if (!input.name) {
+      toast.error("Please enter your name!");
+      return;
+    }
+
+    if (!input.userName) {
+      toast.error("Please enter your userName!");
+      return;
+    }
+
+    if (!input.emailId) {
+      toast.error("Please enter your email!");
+      return;
+    }
+
+    if (!input.password) {
+      toast.error("Please enter your password!");
+      return;
     }
 
     const formData = new FormData();
@@ -46,14 +70,31 @@ const SignUp = () => {
         withCredentials: true,
       });
       if (response.status === 200) {
-        dispatch(setIsLoggedIn(true));
         navigate("/login");
         toast.success("Registration successful!");
       } else {
         toast.error("Registration successful!");
       }
     } catch (error) {
-      toast.error("An error occurred during registration!");
+      if (error.response) {
+        // Server responded with a status code outside the range of 2xx
+        const { status, data } = error.response;
+        if (status === 400) {
+          toast.error("Invalid input! Please check your details.");
+        } else if (status === 401) {
+          toast.error("Unauthorized! Please log in again.");
+        } else if (status === 500) {
+          toast.error("Server error! Please try again later.");
+        } else {
+          toast.error(`An error occurred: ${data.message || "Unknown error"}`);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error("Network error! Please check your internet connection.");
+      } else {
+        // Something else caused the error
+        toast.error(`An error occurred: ${error.message}`);
+      }
     } finally {
       dispatch(setLoading(false));
     }
@@ -98,16 +139,26 @@ const SignUp = () => {
                 className="form-input"
               />
             </div>
-            <div className="form-sub-div">
+            <div className="relative form-sub-div">
               <label>Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={input.password}
                 onChange={changeEventHandler}
-                placeholder="Enter Password"
+                placeholder="Enter Your Password"
                 className="form-input"
               />
+              <span
+                className="absolute right-3 top-2/3 transform -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <TbEye className="text-2xl" />
+                ) : (
+                  <TbEyeClosed className="text-2xl" />
+                )}
+              </span>
             </div>
 
             {loading ? (
@@ -118,7 +169,10 @@ const SignUp = () => {
             <p className="mt-4">
               Already have an account?
               <span className="ml-2">
-                <Link to="/login" className="text-red-600">
+                <Link
+                  to="/login"
+                  className="text-green-600 font-bold underline"
+                >
                   Login
                 </Link>
               </span>
